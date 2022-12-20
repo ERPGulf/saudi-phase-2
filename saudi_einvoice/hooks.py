@@ -11,8 +11,8 @@ app_license = "MIT"
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/saudi_einvoice/css/saudi_einvoice.css"
-# app_include_js = "/assets/saudi_einvoice/js/saudi_einvoice.js"
+app_include_css = "/assets/saudi_einvoice/css/saudi_einvoice.css"
+app_include_js = "/assets/saudi_einvoice/js/saudi_einvoice.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/saudi_einvoice/css/saudi_einvoice.css"
@@ -33,7 +33,7 @@ app_license = "MIT"
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
-
+doctype_js = {"Sales Invoice" : "saudi_einvoice.saudi_einvoice.sales_invoicesa.js"}
 # Home Pages
 # ----------
 
@@ -109,7 +109,22 @@ app_license = "MIT"
 #		"on_trash": "method"
 #	}
 # }
-
+doc_events = {
+    
+    "Sales Invoice": {
+        "after_insert": [
+            "saudi_einvoice.saudi_einvoice.utils.prepare_and_attach_invoice",
+         ],
+         
+       "on_submit": [
+            "saudi_einvoice.saudi_einvoice.utils.generate_sign",
+            
+         ] 
+    },
+    "Address": {
+        "on_update": "saudi_einvoice.saudi_einvoice.setup.setup"
+    }
+}
 # Scheduled Tasks
 # ---------------
 
