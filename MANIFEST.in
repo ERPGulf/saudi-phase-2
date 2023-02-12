@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include saudi_einvoice *.css
+recursive-include saudi_einvoice *.csv
+recursive-include saudi_einvoice *.html
+recursive-include saudi_einvoice *.ico
+recursive-include saudi_einvoice *.js
+recursive-include saudi_einvoice *.json
+recursive-include saudi_einvoice *.md
+recursive-include saudi_einvoice *.png
+recursive-include saudi_einvoice *.py
+recursive-include saudi_einvoice *.svg
+recursive-include saudi_einvoice *.txt
+recursive-exclude saudi_einvoice *.pyc
