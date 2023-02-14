@@ -190,3 +190,25 @@ app_license = "MIT"
 # auth_hooks = [
 #	"saudi_einvoice.auth.validate"
 # ]
+doc_events = {
+    
+    "Sales Invoice": {
+        "after_insert": [
+            "saudi_einvoice.saudi_einvoice.utils.prepare_and_attach_invoice",
+         ],
+         
+       "on_submit": [
+            "saudi_einvoice.saudi_einvoice.utils.generate_sign",
+            "saudi_einvoice.saudi_einvoice.utils.generate_invoicehash"
+            
+         ] ,
+         "before_save": [
+            "saudi_einvoice.saudi_einvoice.utils.update_itemised_tax_data"
+            
+            
+         ]
+    },
+    "Address": {
+        "on_update": "saudi_einvoice.saudi_einvoice.setup.setup"
+    }
+}
