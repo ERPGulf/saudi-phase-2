@@ -44,10 +44,14 @@ def update_itemised_tax_data(doc,method):
         if itemised_tax.get(row.item_code):
             tax_rate = sum([tax.get("tax_rate", 0)
                            for d, tax in itemised_tax.get(row.item_code).items()])
-
+        tax= row.item_tax_template
+        x=frappe.get_doc("Item Tax Template",tax)
+        y= x.as_dict()
+        row.tax=y['taxes'][0].tax_rate
         row.tax_rate = flt(tax_rate)
         row.tax_amount = flt((row.net_amount * tax_rate) /
                              100, row.net_amount)
+        
         row.total_amount = flt(
             (row.net_amount + row.tax_amount))
 
@@ -1071,4 +1075,6 @@ def api_integrationn(doc,method):
     x = requests.post(url3, json = body, headers = headerr2)
     # msgprint(x.text) 
     return x.text  
+# @frappe.whitelist(allow_guest=True)
+# def tax_rate():
     

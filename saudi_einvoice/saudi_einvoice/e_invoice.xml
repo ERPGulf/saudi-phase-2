@@ -149,7 +149,7 @@
 </cac:AccountingCustomerParty>
 <cac:PayeeParty>
 <cac:PartyName>
-<cbc:Name>Ebeneser Scrooge Inc.</cbc:Name>
+<cbc:Name>{{  doc.company }}</cbc:Name>
 </cac:PartyName>
 <cac:PartyLegalEntity>
 <cbc:CompanyID schemeID="UK:CH" schemeAgencyID="ZZZ">345641198234023</cbc:CompanyID>
@@ -183,11 +183,10 @@
 <cac:TaxTotal>
 
 <cbc:TaxAmount currencyID="SAR">{{ doc.total_taxes_and_charges }}</cbc:TaxAmount>
-{% for item in doc.e_invoice_items %}
-{%- for tax, data in doc.tax_data.items() %}
+
 <cac:TaxSubtotal>
-<cbc:TaxableAmount currencyID="SAR">{{ item.amount }}</cbc:TaxableAmount>
-<cbc:TaxAmount currencyID="SAR">{{ format_float(item.tax_amount, item_meta.get_field("tax_amount").precision) }}</cbc:TaxAmount>
+<cbc:TaxableAmount currencyID="SAR">{{ doc.total }}</cbc:TaxableAmount>
+<cbc:TaxAmount currencyID="SAR">{{  doc.total_taxes_and_charges }}</cbc:TaxAmount>
 <cac:TaxCategory>
 <cbc:ID>S</cbc:ID>
 <cbc:Percent>15</cbc:Percent>
@@ -196,14 +195,13 @@
 </cac:TaxScheme>
 </cac:TaxCategory>
 </cac:TaxSubtotal>
-{% endfor %}
-{% endfor %}
+
 </cac:TaxTotal>
-{%- for tax, data in doc.tax_data.items() %}
+
 <cac:TaxTotal>
-<cbc:TaxAmount currencyID="SAR">{{ format_float(data.tax_amount, item_meta.get_field("tax_amount").precision) }}</cbc:TaxAmount>
+<cbc:TaxAmount currencyID="SAR">{{ doc.total_taxes_and_charges }}</cbc:TaxAmount>
 </cac:TaxTotal>
-{% endfor %}
+
 <cac:LegalMonetaryTotal>
 <cbc:LineExtensionAmount currencyID="SAR">{{ doc.total }}</cbc:LineExtensionAmount>
 <cbc:TaxExclusiveAmount currencyID="SAR">{{ doc.total }}</cbc:TaxExclusiveAmount>
@@ -220,7 +218,7 @@
 {%- for tax, data in doc.tax_data.items() %}
 <cac:TaxTotal>
 <cbc:TaxAmount currencyID="SAR">{{ format_float(item.tax_amount, item_meta.get_field("tax_amount").precision) }}</cbc:TaxAmount>
-<cbc:RoundingAmount currencyID="SAR">{{ item.amount }}</cbc:RoundingAmount>
+<cbc:RoundingAmount currencyID="SAR">{{ item.total_amount }}</cbc:RoundingAmount>
 </cac:TaxTotal>
 {% endfor %}
 <cac:Item>
@@ -232,12 +230,7 @@
 <cac:StandardItemIdentification>
 <cbc:ID schemeID="GTIN" schemeAgencyID="9">{{ item.idx }}</cbc:ID>
 </cac:StandardItemIdentification>
-<cac:CommodityClassification>
-<cbc:ItemClassificationCode listAgencyID="113" listID="UNSPSC">12344321</cbc:ItemClassificationCode>
-</cac:CommodityClassification>
-<cac:CommodityClassification>
-<cbc:ItemClassificationCode listAgencyID="2" listID="CPV">65434568</cbc:ItemClassificationCode>
-</cac:CommodityClassification>
+
 <ClassifiedTaxCategory xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
 <cbc:ID schemeID="UN/ECE 5305" schemeAgencyID="6">S</cbc:ID>
 <cbc:Percent>15</cbc:Percent>
@@ -245,10 +238,7 @@
 <cbc:ID schemeID="UN/ECE 5153" schemeAgencyID="6">VAT</cbc:ID>
 </TaxScheme>
 </ClassifiedTaxCategory>
-<cac:AdditionalItemProperty>
-<cbc:Name>Color</cbc:Name>
-<cbc:Value>black</cbc:Value>
-</cac:AdditionalItemProperty>
+
 </cac:Item>
 
 <cac:Price>
