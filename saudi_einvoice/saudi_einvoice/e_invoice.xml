@@ -79,14 +79,14 @@
 </cac:PostalAddress>
  {% endif %}
 <cac:PartyTaxScheme>
-<cbc:CompanyID schemeID="DKVAT" schemeAgencyID="ZZZ">312345678912343</cbc:CompanyID>
+<cbc:CompanyID schemeID="DKVAT" schemeAgencyID="ZZZ">{{ doc.company_tax_id }}</cbc:CompanyID>
 <cac:TaxScheme>
 <cbc:ID schemeID="UN/ECE 5153" schemeAgencyID="6">VAT</cbc:ID>
 </cac:TaxScheme>
 </cac:PartyTaxScheme>
 <cac:PartyLegalEntity>
 <cbc:RegistrationName>{{ doc.company }}</cbc:RegistrationName>
-<cbc:CompanyID schemeID="CVR" schemeAgencyID="ZZZ">5402697509</cbc:CompanyID>
+<cbc:CompanyID schemeID="CVR" schemeAgencyID="ZZZ">{{ doc.company_tax_id }}</cbc:CompanyID>
 <cac:RegistrationAddress>
 <cbc:CityName>{{ doc.company_address_data.city }}</cbc:CityName>
 <cbc:CountrySubentity>{{ doc.company_address_data.state }}</cbc:CountrySubentity>
@@ -111,7 +111,7 @@
 <cac:AccountingCustomerParty>
 <cac:Party>
 <cac:PartyIdentification>
-<cbc:ID schemeID="CRN">1234567987654</cbc:ID>
+<cbc:ID schemeID="CRN">{{ doc.company_tax_id }}</cbc:ID>
 </cac:PartyIdentification>
 {% if doc.customer_address_data %}
 <cac:PostalAddress>
@@ -129,14 +129,14 @@
 </cac:PostalAddress>
  {% endif %}
 <cac:PartyTaxScheme>
-<cbc:CompanyID schemeID="BEVAT" schemeAgencyID="ZZZ">301234567891223</cbc:CompanyID>
+<cbc:CompanyID schemeID="BEVAT" schemeAgencyID="ZZZ">{{ doc.customer_data.tax_id }}</cbc:CompanyID>
 <cac:TaxScheme>
 <cbc:ID schemeID="UN/ECE 5153" schemeAgencyID="6">VAT</cbc:ID>
 </cac:TaxScheme>
 </cac:PartyTaxScheme>
 <cac:PartyLegalEntity>
 <cbc:RegistrationName>{{ doc.customer }}</cbc:RegistrationName>
-<cbc:CompanyID schemeAgencyID="ZZZ" schemeID="ZZZ">326765645342123</cbc:CompanyID>
+<cbc:CompanyID schemeAgencyID="ZZZ" schemeID="ZZZ">{{ doc.customer_data.tax_id }}</cbc:CompanyID>
 <cac:RegistrationAddress>
 <cbc:CityName>{{ doc.customer_address_data.city }}</cbc:CityName>
 <cbc:CountrySubentity>{{ doc.customer_address_data.state }}</cbc:CountrySubentity>
@@ -152,7 +152,7 @@
 <cbc:Name>{{  doc.company }}</cbc:Name>
 </cac:PartyName>
 <cac:PartyLegalEntity>
-<cbc:CompanyID schemeID="UK:CH" schemeAgencyID="ZZZ">345641198234023</cbc:CompanyID>
+<cbc:CompanyID schemeID="UK:CH" schemeAgencyID="ZZZ">{{ doc.customer_data.tax_id }}</cbc:CompanyID>
 </cac:PartyLegalEntity>
 </cac:PayeeParty>
 <cac:Delivery>

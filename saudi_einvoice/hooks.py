@@ -33,7 +33,7 @@ app_license = "MIT"
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
-
+# doctype_js = {"Sales Invoice" : "saudi_einvoice/apiinteg.js"}
 # Home Pages
 # ----------
 
@@ -199,7 +199,8 @@ doc_events = {
          
        "on_submit": [
             "saudi_einvoice.saudi_einvoice.utils.generate_sign",
-            "saudi_einvoice.saudi_einvoice.utils.generate_invoicehash"
+            "saudi_einvoice.saudi_einvoice.utils.generate_invoicehash",
+            "saudi_einvoice.saudi_einvoice.utils.api_integrationn"
             
          ] ,
          "before_save": [

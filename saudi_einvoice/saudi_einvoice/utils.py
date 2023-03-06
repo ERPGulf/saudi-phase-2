@@ -8,6 +8,7 @@ from frappe.utils import cstr, flt
 from frappe.utils.file_manager import remove_file
 import time
 import uuid
+from path import Path
 from fatoora import Fatoora
 from frappe.utils.data import add_to_date, get_time, getdate
 import base64
@@ -95,7 +96,9 @@ def prepare_invoice(invoice, progressive_number):
     # set customer information
     invoice.customer_data = frappe.get_doc("Customer", invoice.customer)
     customer_address = frappe.get_doc("Address", invoice.customer_address)
+    
     invoice.customer_address_data = customer_address
+
     
     if invoice.shipping_address_name:
         invoice.shipping_address_data = frappe.get_doc(
@@ -927,24 +930,29 @@ def generate_invoicehash(doc,method):
     settings = frappe.get_doc('Hash')
     settings.pih = sha256hash
     settings.save()
-
+# apps/saudi_einvoice/saudi_einvoice/saudi_einvoice/apiinteg.js
 @frappe.whitelist(allow_guest=True)
 def api_integrationn(doc,method):  
-   
+    new_path = "/opt/bench/frappe-bench/apps/saudi_einvoice/saudi_einvoice"
+    cwd = os.getcwd()
+    
+    Path(new_path).chdir()
+    
+    
     cmd = "openssl ecparam -name secp256k1 -genkey -noout -out privatekey3.pem"
     # return "done"
     decrypted1 = call(cmd, shell=True) #execute command with the shell
-    # return "done"
+    
 
     cmd1="openssl ec -in privatekey3.pem -pubout -conv_form compressed -out publickey3.pem"
     decrypted2 = call(cmd1, shell=True) 
-
+    
     cmd2="openssl req -new -sha256 -key privatekey3.pem -extensions v3_req -config csrconfig.txt -out taxpayer3.csr" 
     decrypted3 = call(cmd2, shell=True)  
 
     cmd3="openssl base64 -in taxpayer3.csr -out taxpayerCSRbase64Encoded3.txt"
     decrypted4 = call(cmd3, shell=True) 
-
+    
 
     with open(r'taxpayerCSRbase64Encoded3.txt', 'r') as file:
   
@@ -963,8 +971,9 @@ def api_integrationn(doc,method):
         # text file
         file.write(data)
         print("done")
-    url = 'https://gw-apic-gov.gazt.gov.sa/e-invoicing/developer-portal/compliance'
+    url = 'https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal/compliance'
     # https://gw-apic-gov.gazt.gov.sa/e-invoicing/core/compliance
+    # 'https://gw-apic-gov.gazt.gov.sa/e-invoicing/developer-portal/compliance'
     headerr={"Accept" :"application/json",
            "OTP":"123345",
            "Content-Type":"application/json",
@@ -976,9 +985,10 @@ def api_integrationn(doc,method):
         # them in a new variable
         data = file.read()
     myobj = {'csr': data}
-
+    
     x = requests.post(url, json = myobj, headers = headerr)
     response=(x.json())
+  
     ccsid=(response['binarySecurityToken'])
     secret = response['secret']
 
@@ -998,10 +1008,11 @@ def api_integrationn(doc,method):
 
     myobj1 = {
         "compliance_request_id": "1234567890123"}
-    url2 = 'https://gw-apic-gov.gazt.gov.sa/e-invoicing/developer-portal/production/csids'
+    url2 = 'https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal/production/csids'
     # https://gw-apic-gov.gazt.gov.sa/e-invoicing/core/production/csids
     x = requests.post(url2, json = myobj1, headers = headerr1)
     response1= x.json()
+    
     pcsid=(response1['binarySecurityToken'])
     pcsid_secret =response1['secret']
     with open("PCSIDresp.txt", "w") as f:
@@ -1017,21 +1028,22 @@ def api_integrationn(doc,method):
         # Writing the replaced data in our
         # text file
         file.write(base64_message1)
-
+    
     headerr2={"Accept" :"application/json",
            "accept-language": 'en' ,
            "Clearance-Status": '0',
            "Authorization" : "Basic " + base64_message1,
            "Content-Type":"application/json",
            "Accept-Version":"V2"}
-    cwd = os.getcwd()
+    
+    
     
     attachments = frappe.get_all(
 		"File",
 		fields=("name", "file_name", "attached_to_name","file_url"),
 		filters={"attached_to_name": ("in", doc.name), "attached_to_doctype": "Sales Invoice"},
 	)
-   
+    
     for attachment in attachments:
         if (
 			attachment.file_name.startswith("Signed")
@@ -1041,10 +1053,10 @@ def api_integrationn(doc,method):
             xml_filename = attachment.file_name
             file_url = attachment.file_url
           
-    cwd = os.getcwd()
+    
     
     xml_file = cwd+'/mum128.erpgulf.com/public'+file_url
-    
+   
     
     log_data(f'Attchment data : {attachments}')
     
@@ -1063,18 +1075,22 @@ def api_integrationn(doc,method):
         # text file
         file.write(data)
         print(type(data))
-
+    
     body ={
         "invoiceHash": "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==",
         "uuid": "3cf5ee18-ee25-44ea-a444-2c37ba7f28be",
         "invoice": data}
 
-    url3 ='https://gw-apic-gov.gazt.gov.sa/e-invoicing/developer-portal/invoices/reporting/single'
+    url3 ='https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal/invoices/reporting/single'
     # https://gw-apic-gov.gazt.gov.sa/e-invoicing/core/reporting/single
 
     x = requests.post(url3, json = body, headers = headerr2)
-    # msgprint(x.text) 
-    return x.text  
-# @frappe.whitelist(allow_guest=True)
-# def tax_rate():
+    response2= x.text
+    with open(r'responseapi.txt', 'w') as file:
+  
+        # Writing the replaced data in our
+        # text file
+        file.write(response2)
+    return response2 
+
     
