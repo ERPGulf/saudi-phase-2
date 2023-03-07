@@ -606,7 +606,9 @@ def generate_sign(doc ,method):
           
     cwd = os.getcwd()
     signedxmlll = "Signed"+ xml_filename
-    xml_file = cwd+'/mum128.erpgulf.com/public'+file_url
+    site=(frappe.local.site)
+    # xml_file = cwd+'/mum128.erpgulf.com/public'+file_url
+    xml_file = cwd+'/'+site+'/public'+file_url
     
     
     log_data(f'Attchment data : {attachments}')
@@ -614,7 +616,7 @@ def generate_sign(doc ,method):
     
        
 
-    # xml_file =cwd+'/mum128.erpgulf.com'+"/public/files/IT24556_00061.xml"
+    
   
     sbXml = chilkat2.StringBuilder()
     success = sbXml.LoadFile(xml_file,"utf-8")
@@ -667,9 +669,9 @@ def generate_sign(doc ,method):
     gen.AddObjectRef("xadesSignedProperties","sha256","","","http://www.w3.org/2000/09/xmldsig#SignatureProperties")
     cwd = os.getcwd()
     
-    cer = cwd+'/mum128.erpgulf.com'+"/public/files/testcertt.cer"
-    pkey = cwd+'/mum128.erpgulf.com'+"/public/files/testpkeyy.pem"
-    pfx = cwd+'/mum128.erpgulf.com'+"/public/files/testpfxx.pfx"
+    cer = cwd+'/'+site+"/public/files/testcertt.cer"
+    pkey = cwd+'/'+site+"/public/files/testpkeyy.pem"
+    pfx = cwd+'/'+site+"/public/files/testpfxx.pfx"
     key = OpenSSL.crypto.PKey()
     key.generate_key( OpenSSL.crypto.TYPE_RSA, 1024 )
     cert = OpenSSL.crypto.X509()
@@ -750,7 +752,8 @@ def generate_sign(doc ,method):
     
     
     # Save the signed XML to a file.
-    success = sbXml.WriteFile(cwd+'/mum128.erpgulf.com'+"/public/files/"+ signedxmlll,"utf-8",False)
+    # success = sbXml.WriteFile(cwd+'/mum128.erpgulf.com'+"/public/files/"+ signedxmlll,"utf-8",False)
+    success = sbXml.WriteFile(cwd+'/'+site+"/public/files/"+ signedxmlll,"utf-8",False)
     
     print(sbXml.GetAsString())
 
@@ -796,81 +799,7 @@ def generate_sign(doc ,method):
    
     return signed_file
 
-# @frappe.whitelist(allow_guest=True)
-# def generate_qr():
-#     tlv_buff = "123456354AAA"
-#     # base64_string = b64encode(bytes.fromhex(tlv_buff)).decode()
 
-#     # qr_image = io.BytesIO()
-#     # url = qr_create(base64_string, error="L")
-#     # return qr_image.getvalue()
-#     # big_code = pyqrcode.create('0987654321', error='L', version=27, mode='binary')
-#     # return big_code.show()
-#     cwd = os.getcwd()
-#     cer = cwd+'/mum128.erpgulf.com'+"/public/files/test.txt"
-#     file_path = cwd+'/mum128.erpgulf.com'+"/public/files/QRCode-f7249.png"
-#     with open(file=file_path) as image_file:
-#     # code = pyqrcode.create('Are you suggesting coconuts migrate?')
-#         image_as_str = image_file.png_as_base64_str(scale=5)
-#     open( cer, 'w' ).write( image_as_str )
-#     signed_file = frappe.get_doc(
-#         {
-#             "doctype": "File",
-#             "file_name": "qrr.txt",
-            
-#             # "attached_to_name":doc.name,
-           
-#             "content": image_as_str
-#         }
-#     )
-#     signed_file.save()
-#     return "code"
-
-
-# @frappe.whitelist(allow_guest=True)
-# def generate_qr(doc, method):
-#     seller_name = frappe.db.get_value("Company", doc.company, "company_name_in_arabic")
-#     tax_id = frappe.db.get_value("Company", doc.company, "tax_id")
-#     posting_date = getdate(doc.posting_date)
-#     time = get_time(doc.posting_time)
-#     seconds = time.hour * 60 * 60 + time.minute * 60 + time.second
-#     time_stamp = add_to_date(posting_date, seconds=seconds)
-#     time_stamp = time_stamp.strftime("%Y-%m-%dT%H:%M:%SZ")
-#     invoice_amount = str(doc.grand_total)
-#     vat_amount = str(get_vat_amount(doc))
-
-
-#     fatoora_obj = Fatoora(
-#     seller_name=seller_name,
-#     tax_number=tax_id, # or "1234567891"
-#     invoice_date=time_stamp, # timestamp or datetime object, or string ISO 8601 Zulu format
-#     total_amount=invoice_amount, # or 100.0, 100.00, "100.0", "100.00"
-#     tax_amount= vat_amount, # or 15.0, 15.00, "15.0", "15.00"
-# )
-#     name = frappe.generate_hash(doc.name, 5)
-
-# 		# making file
-#     filename = f"QRCode1-{name}.png".replace(os.path.sep, "__")
-#     cwd = os.getcwd()
-#     file_path = cwd+'/mum128.erpgulf.com'+"/public/files/QRcodetest.png"
-
-#     qr_code =fatoora_obj.qrcode(file_path)
-    
-    # file = frappe.get_doc(
-	# 		{
-	# 			"doctype": "File",
-	# 			"file_name": filename,
-	# 			"is_private": 0,
-	# 			"content": qr_code,
-	# 			"attached_to_doctype": doc.get("doctype"),
-	# 			"attached_to_name": doc.get("name"),
-	# 			"attached_to_field": "ksa_einv_qr",
-	# 		}
-	# 	)
-
-    # file.save()
-    # return (fatoora_obj.base64)
-    # return (fatoora_obj.hash)
 
 
 def get_vat_amount(doc):
@@ -894,17 +823,17 @@ def get_vat_amount(doc):
 
 
 
-@frappe.whitelist(allow_guest=True)
-def generate_pkey():
-    # provide the location to store private key
-    cwd = os.getcwd()   
-    pkey = cwd+'/mum128.erpgulf.com'+"/public/files/testpkeyyo.pem"
+# @frappe.whitelist(allow_guest=True)
+# def generate_pkey():
+#     # provide the location to store private key
+#     cwd = os.getcwd()   
+#     pkey = cwd+'/mum128.erpgulf.com'+"/public/files/testpkeyyo.pem"
     
-    key = OpenSSL.crypto.PKey()
-    key.generate_key( OpenSSL.crypto.TYPE_RSA, 1024 )
+#     key = OpenSSL.crypto.PKey()
+#     key.generate_key( OpenSSL.crypto.TYPE_RSA, 1024 )
     
-    open( pkey, 'wb' ).write( 
-    OpenSSL.crypto.dump_privatekey( OpenSSL.crypto.FILETYPE_PEM, key ) )
+#     open( pkey, 'wb' ).write( 
+#     OpenSSL.crypto.dump_privatekey( OpenSSL.crypto.FILETYPE_PEM, key ) )
 @frappe.whitelist(allow_guest=True)
 def generate_invoicehash(doc,method):
     # cmd1="openssl dgst -sha256 zatca2_new.xml"
@@ -913,7 +842,7 @@ def generate_invoicehash(doc,method):
 		fields=("name", "file_name", "attached_to_name","file_url"),
 		filters={"attached_to_name": ("in", doc.name), "attached_to_doctype": "Sales Invoice"},
 	)
-   
+    site=(frappe.local.site)
     for attachment in attachments:
         if (
 			attachment.file_name.startswith("SA")
@@ -923,7 +852,7 @@ def generate_invoicehash(doc,method):
             xml_filename = attachment.file_name
             file_url = attachment.file_url
     cwd = os.getcwd() 
-    file_name = cwd+'/mum128.erpgulf.com'+"/public/files/"+xml_filename
+    file_name = cwd+'/'+site+"/public/files/"+xml_filename
     with open(file_name,"rb") as f:
         data = f.read()
         sha256hash = hashlib.sha256(data).hexdigest()
@@ -935,6 +864,7 @@ def generate_invoicehash(doc,method):
 def api_integrationn(doc,method):  
     new_path = "/opt/bench/frappe-bench/apps/saudi_einvoice/saudi_einvoice"
     cwd = os.getcwd()
+    site=(frappe.local.site)
     
     Path(new_path).chdir()
     
@@ -1055,7 +985,8 @@ def api_integrationn(doc,method):
           
     
     
-    xml_file = cwd+'/mum128.erpgulf.com/public'+file_url
+    # xml_file = cwd+'/mum128.erpgulf.com/public'+file_url
+    xml_file=cwd+'/'+site+'/public'+file_url
    
     
     log_data(f'Attchment data : {attachments}')
