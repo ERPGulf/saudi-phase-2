@@ -1,1 +1,0 @@
-{"validationResults":{"infoMessages":[{"type":"INFO","code":"XSD_ZATCA_VALID","category":"XSD validation","message":"Complied with UBL 2.1 standards in line with ZATCA specifications","status":"PASS"}],"warningMessages":[],"errorMessages":[],"status":"PASS"},"reportingStatus":"REPORTED"}
