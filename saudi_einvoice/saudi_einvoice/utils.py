@@ -759,7 +759,7 @@ def generate_sign(doc ,method):
 
     signedd_xml=sbXml.GetAsString()
    
-    # Verify the signatures we just produced...
+    # Verify the signatures produced
     verifier = chilkat2.XmlDSig()
     success = verifier.LoadSignatureSb(sbXml)
     if (success != True):
@@ -767,7 +767,7 @@ def generate_sign(doc ,method):
         sys.exit()
 
 
-    # Starting in Chilkat v9.5.0.92, specify "ZATCA" in uncommon options 
+    
     # to validate signed XML according to ZATCA needs.
 
     verifier.UncommonOptions = "ZATCA"
@@ -801,7 +801,7 @@ def generate_sign(doc ,method):
 
 
 
-
+#function to get vat amount
 def get_vat_amount(doc):
 	vat_settings = frappe.db.get_value("KSA VAT Setting", {"company": doc.company})
 	vat_accounts = []
@@ -834,9 +834,11 @@ def get_vat_amount(doc):
     
 #     open( pkey, 'wb' ).write( 
 #     OpenSSL.crypto.dump_privatekey( OpenSSL.crypto.FILETYPE_PEM, key ) )
+
+# function to generate invoicehash
 @frappe.whitelist(allow_guest=True)
 def generate_invoicehash(doc,method):
-    # cmd1="openssl dgst -sha256 zatca2_new.xml"
+    
     attachments = frappe.get_all(
 		"File",
 		fields=("name", "file_name", "attached_to_name","file_url"),
@@ -859,7 +861,8 @@ def generate_invoicehash(doc,method):
     settings = frappe.get_doc('Hash')
     settings.pih = sha256hash
     settings.save()
-# apps/saudi_einvoice/saudi_einvoice/saudi_einvoice/apiinteg.js
+
+# contains csr generation, public key,privake key, getting ccsid, production csid,and reporting of invoice
 @frappe.whitelist(allow_guest=True)
 def api_integrationn(doc,method):  
     new_path = "/opt/bench/frappe-bench/apps/saudi_einvoice/saudi_einvoice"
@@ -903,7 +906,7 @@ def api_integrationn(doc,method):
         print("done")
     url = 'https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal/compliance'
     # https://gw-apic-gov.gazt.gov.sa/e-invoicing/core/compliance
-    # 'https://gw-apic-gov.gazt.gov.sa/e-invoicing/developer-portal/compliance'
+    
     headerr={"Accept" :"application/json",
            "OTP":"123345",
            "Content-Type":"application/json",
@@ -1022,6 +1025,8 @@ def api_integrationn(doc,method):
         # Writing the replaced data in our
         # text file
         file.write(response2)
+    # frappe.msgprint("<pre>{}</pre>".format(frappe.as_json(response2)))
+    frappe.msgprint("Response: {}".format(response2))
     return response2 
 
     
