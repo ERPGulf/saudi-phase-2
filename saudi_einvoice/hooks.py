@@ -118,11 +118,19 @@ doc_events = {
          
        "on_submit": [
             "saudi_einvoice.saudi_einvoice.utils.generate_sign",
+            "saudi_einvoice.saudi_einvoice.utils.generate_invoicehash",
+            "saudi_einvoice.saudi_einvoice.utils.api_integrationn"
             
-         ] 
+         ] ,
+         "before_save": [
+            "saudi_einvoice.saudi_einvoice.utils.update_itemised_tax_data",
+            "saudi_einvoice.saudi_einvoice.setup.setup"
+            
+            
+         ]
     },
     "Address": {
-        "on_update": "saudi_einvoice.saudi_einvoice.setup.setup"
+        "before_save": "saudi_einvoice.saudi_einvoice.setup.setup"
     }
 }
 # Scheduled Tasks

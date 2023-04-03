@@ -23,7 +23,7 @@
 <cbc:UBLVersionID>2.1</cbc:UBLVersionID>
 <cbc:ProfileID>reporting:1.0</cbc:ProfileID>
 <cbc:ID>TOSL108</cbc:ID>
-<cbc:UUID>3cf5ee18-ee25-44ea-a444-2c37ba7f28be</cbc:UUID>
+<cbc:UUID>{{ doc.uuid }}</cbc:UUID>
 <cbc:IssueDate>{{ doc.posting_date }}</cbc:IssueDate>
 <cbc:InvoiceTypeCode listID="UN/ECE 1001 Subset" listAgencyID="6" name="0100000">388</cbc:InvoiceTypeCode>
 <cbc:Note languageID="en">Ordered in our booth at the convention.</cbc:Note>
@@ -44,12 +44,12 @@
 </cac:ContractDocumentReference>
 <cac:AdditionalDocumentReference>
 <cbc:ID>ICV</cbc:ID>
-<cbc:UUID>70</cbc:UUID>
+<cbc:UUID>{{ doc.name }}</cbc:UUID>
 </cac:AdditionalDocumentReference>
 <cac:AdditionalDocumentReference>
 <cbc:ID>PIH</cbc:ID>
 <cac:Attachment>
-<cbc:EmbeddedDocumentBinaryObject mimeCode="text/plain">a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a</cbc:EmbeddedDocumentBinaryObject>
+<cbc:EmbeddedDocumentBinaryObject mimeCode="text/plain">{{ doc.pih }}</cbc:EmbeddedDocumentBinaryObject>
 </cac:Attachment>
 </cac:AdditionalDocumentReference>
 <cac:AdditionalDocumentReference>
@@ -74,22 +74,22 @@
 <cbc:PostalZone>{{ doc.company_address_data.pincode }}</cbc:PostalZone>
 <cbc:CountrySubentityCode>{{ doc.company_address_data.state }}</cbc:CountrySubentityCode>
 <cac:Country>
-<cbc:IdentificationCode listID="ISO3166-1" listAgencyID="6">{{ doc.company_address_data.country_code }}</cbc:IdentificationCode>
+<cbc:IdentificationCode listID="ISO3166-1" listAgencyID="6">SA</cbc:IdentificationCode>
 </cac:Country>
 </cac:PostalAddress>
  {% endif %}
 <cac:PartyTaxScheme>
-<cbc:CompanyID schemeID="DKVAT" schemeAgencyID="ZZZ">312345678912343</cbc:CompanyID>
+<cbc:CompanyID schemeID="DKVAT" schemeAgencyID="ZZZ">{{ doc.company_tax_id }}</cbc:CompanyID>
 <cac:TaxScheme>
 <cbc:ID schemeID="UN/ECE 5153" schemeAgencyID="6">VAT</cbc:ID>
 </cac:TaxScheme>
 </cac:PartyTaxScheme>
 <cac:PartyLegalEntity>
 <cbc:RegistrationName>{{ doc.company }}</cbc:RegistrationName>
-<cbc:CompanyID schemeID="CVR" schemeAgencyID="ZZZ">5402697509</cbc:CompanyID>
+<cbc:CompanyID schemeID="CVR" schemeAgencyID="ZZZ">{{ doc.company_tax_id }}</cbc:CompanyID>
 <cac:RegistrationAddress>
-<cbc:CityName>Big city</cbc:CityName>
-<cbc:CountrySubentity>RegionA</cbc:CountrySubentity>
+<cbc:CityName>{{ doc.company_address_data.city }}</cbc:CityName>
+<cbc:CountrySubentity>{{ doc.company_address_data.state }}</cbc:CountrySubentity>
 <cac:Country>
 <cbc:IdentificationCode>SA</cbc:IdentificationCode>
 </cac:Country>
@@ -101,9 +101,9 @@
 <cbc:ElectronicMail>{{ doc.company_address_data.email_id }}</cbc:ElectronicMail>
 </cac:Contact>
 <cac:Person>
-<cbc:FirstName>Antonio</cbc:FirstName>
-<cbc:FamilyName>M</cbc:FamilyName>
-<cbc:MiddleName>Salemacher</cbc:MiddleName>
+<cbc:FirstName>{{ doc.company }}</cbc:FirstName>
+<cbc:FamilyName></cbc:FamilyName>
+<cbc:MiddleName></cbc:MiddleName>
 <cbc:JobTitle>Sales manager</cbc:JobTitle>
 </cac:Person>
 </cac:Party>
@@ -111,7 +111,7 @@
 <cac:AccountingCustomerParty>
 <cac:Party>
 <cac:PartyIdentification>
-<cbc:ID schemeID="CRN">1234567987654</cbc:ID>
+<cbc:ID schemeID="CRN">{{ doc.company_tax_id }}</cbc:ID>
 </cac:PartyIdentification>
 {% if doc.customer_address_data %}
 <cac:PostalAddress>
@@ -119,7 +119,7 @@
 
 <cbc:BuildingNumber>{{ doc.customer_address_data.building_no }}</cbc:BuildingNumber>
 <cbc:PlotIdentification>{{ doc.customer_address_data.plot_id_no }}</cbc:PlotIdentification>
-<cbc:CitySubdivisionName>Alfalah</cbc:CitySubdivisionName>
+<cbc:CitySubdivisionName>{{ doc.customer_address_data.street}}</cbc:CitySubdivisionName>
 <cbc:CityName>{{ doc.customer_address_data.city }}</cbc:CityName>
 <cbc:PostalZone>{{ doc.customer_address_data.pincode }}</cbc:PostalZone>
 <cbc:CountrySubentityCode>{{ doc.customer_address_data.state }}</cbc:CountrySubentityCode>
@@ -129,17 +129,17 @@
 </cac:PostalAddress>
  {% endif %}
 <cac:PartyTaxScheme>
-<cbc:CompanyID schemeID="BEVAT" schemeAgencyID="ZZZ">301234567891223</cbc:CompanyID>
+<cbc:CompanyID schemeID="BEVAT" schemeAgencyID="ZZZ">{{ doc.customer_data.tax_id }}</cbc:CompanyID>
 <cac:TaxScheme>
 <cbc:ID schemeID="UN/ECE 5153" schemeAgencyID="6">VAT</cbc:ID>
 </cac:TaxScheme>
 </cac:PartyTaxScheme>
 <cac:PartyLegalEntity>
 <cbc:RegistrationName>{{ doc.customer }}</cbc:RegistrationName>
-<cbc:CompanyID schemeAgencyID="ZZZ" schemeID="ZZZ">326765645342123</cbc:CompanyID>
+<cbc:CompanyID schemeAgencyID="ZZZ" schemeID="ZZZ">{{ doc.customer_data.tax_id }}</cbc:CompanyID>
 <cac:RegistrationAddress>
-<cbc:CityName>Mainplace</cbc:CityName>
-<cbc:CountrySubentity>RegionB</cbc:CountrySubentity>
+<cbc:CityName>{{ doc.customer_address_data.city }}</cbc:CityName>
+<cbc:CountrySubentity>{{ doc.customer_address_data.state }}</cbc:CountrySubentity>
 <cac:Country>
 <cbc:IdentificationCode>SA</cbc:IdentificationCode>
 </cac:Country>
@@ -149,10 +149,10 @@
 </cac:AccountingCustomerParty>
 <cac:PayeeParty>
 <cac:PartyName>
-<cbc:Name>Ebeneser Scrooge Inc.</cbc:Name>
+<cbc:Name>{{  doc.company }}</cbc:Name>
 </cac:PartyName>
 <cac:PartyLegalEntity>
-<cbc:CompanyID schemeID="UK:CH" schemeAgencyID="ZZZ">345641198234023</cbc:CompanyID>
+<cbc:CompanyID schemeID="UK:CH" schemeAgencyID="ZZZ">{{ doc.customer_data.tax_id }}</cbc:CompanyID>
 </cac:PartyLegalEntity>
 </cac:PayeeParty>
 <cac:Delivery>
@@ -183,11 +183,10 @@
 <cac:TaxTotal>
 
 <cbc:TaxAmount currencyID="SAR">{{ doc.total_taxes_and_charges }}</cbc:TaxAmount>
-{% for item in doc.e_invoice_items %}
-{%- for tax, data in doc.tax_data.items() %}
+
 <cac:TaxSubtotal>
-<cbc:TaxableAmount currencyID="SAR">{{ item.amount }}</cbc:TaxableAmount>
-<cbc:TaxAmount currencyID="SAR">{{ format_float(item.tax_amount, item_meta.get_field("tax_amount").precision) }}</cbc:TaxAmount>
+<cbc:TaxableAmount currencyID="SAR">{{ doc.total }}</cbc:TaxableAmount>
+<cbc:TaxAmount currencyID="SAR">{{  doc.total_taxes_and_charges }}</cbc:TaxAmount>
 <cac:TaxCategory>
 <cbc:ID>S</cbc:ID>
 <cbc:Percent>15</cbc:Percent>
@@ -196,14 +195,13 @@
 </cac:TaxScheme>
 </cac:TaxCategory>
 </cac:TaxSubtotal>
-{% endfor %}
-{% endfor %}
+
 </cac:TaxTotal>
-{%- for tax, data in doc.tax_data.items() %}
+
 <cac:TaxTotal>
-<cbc:TaxAmount currencyID="SAR">{{ format_float(data.tax_amount, item_meta.get_field("tax_amount").precision) }}</cbc:TaxAmount>
+<cbc:TaxAmount currencyID="SAR">{{ doc.total_taxes_and_charges }}</cbc:TaxAmount>
 </cac:TaxTotal>
-{% endfor %}
+
 <cac:LegalMonetaryTotal>
 <cbc:LineExtensionAmount currencyID="SAR">{{ doc.total }}</cbc:LineExtensionAmount>
 <cbc:TaxExclusiveAmount currencyID="SAR">{{ doc.total }}</cbc:TaxExclusiveAmount>
@@ -220,7 +218,7 @@
 {%- for tax, data in doc.tax_data.items() %}
 <cac:TaxTotal>
 <cbc:TaxAmount currencyID="SAR">{{ format_float(item.tax_amount, item_meta.get_field("tax_amount").precision) }}</cbc:TaxAmount>
-<cbc:RoundingAmount currencyID="SAR">{{ item.amount }}</cbc:RoundingAmount>
+<cbc:RoundingAmount currencyID="SAR">{{ item.total_amount }}</cbc:RoundingAmount>
 </cac:TaxTotal>
 {% endfor %}
 <cac:Item>
@@ -232,12 +230,7 @@
 <cac:StandardItemIdentification>
 <cbc:ID schemeID="GTIN" schemeAgencyID="9">{{ item.idx }}</cbc:ID>
 </cac:StandardItemIdentification>
-<cac:CommodityClassification>
-<cbc:ItemClassificationCode listAgencyID="113" listID="UNSPSC">12344321</cbc:ItemClassificationCode>
-</cac:CommodityClassification>
-<cac:CommodityClassification>
-<cbc:ItemClassificationCode listAgencyID="2" listID="CPV">65434568</cbc:ItemClassificationCode>
-</cac:CommodityClassification>
+
 <ClassifiedTaxCategory xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
 <cbc:ID schemeID="UN/ECE 5305" schemeAgencyID="6">S</cbc:ID>
 <cbc:Percent>15</cbc:Percent>
@@ -245,10 +238,7 @@
 <cbc:ID schemeID="UN/ECE 5153" schemeAgencyID="6">VAT</cbc:ID>
 </TaxScheme>
 </ClassifiedTaxCategory>
-<cac:AdditionalItemProperty>
-<cbc:Name>Color</cbc:Name>
-<cbc:Value>black</cbc:Value>
-</cac:AdditionalItemProperty>
+
 </cac:Item>
 
 <cac:Price>

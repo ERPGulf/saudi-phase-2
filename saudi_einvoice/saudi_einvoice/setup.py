@@ -20,7 +20,8 @@ def make_custom_fields(update=True):
 				fieldtype='Data', insert_after='street'),
             dict(fieldname='plot_id_no', label='Plot Identification Number',
 				fieldtype='Data', insert_after='building_no')
-		    ]}
+		    ],
+			}
 
     create_custom_fields(custom_fields, ignore_validate = frappe.flags.in_patch, update=update)
 
