@@ -1,3 +1,7 @@
+
+**For the latest app with 2024 zatca guidlines , please use this link.  https://github.com/ERPGulf/Saudi-E-Invoicing-Phase-2-2024
+**
+
 ## Saudi Einvoice
 
 An app for e-invoicing in Saudi Arabia
